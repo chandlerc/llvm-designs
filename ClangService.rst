@@ -304,7 +304,7 @@ light weight. These will ease the editor integration process. Beyond the Python
 bindings which are seen as absolutely necessary, the following bindings would
 be very useful:
 
-- Elisp, for Emacs integration.
+- Emacs Lisp, for Emacs integration obviously.
 - Ruby, for RoR and web application integration.
 - Lua, often used as a lighter-weight plugin glue language.
 
