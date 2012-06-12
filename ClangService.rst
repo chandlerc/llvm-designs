@@ -212,8 +212,8 @@ The server will also monitor the compilation database and refresh its view if
 the database file changes underneath it. This will be accomplished through the
 file system if supported, or through polling and checksumming if not.
 
-The Clang server will when started will expose its connection through a file.
-This will be a platform-specific file allowing a connection to be made. It is
+The Clang server when started will expose its connection through a file. This
+will be a platform-specific file allowing a connection to be made. It is
 expected to Unix Domain Socket on Linux at least, and likely Mac. Windows
 support mechanism here is TBD. If the server is started around a single
 compilation database, the connection file will be placed adjacent to it, and
