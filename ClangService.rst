@@ -24,26 +24,35 @@ Goals:
   compilation, indexes, and performs the business logic.
 - Define an inter-process communication protocol to allow command line tools
   and libraries to communicate w/ service layer.
+
   - This IPC layer should enable cross-machine usage in theory (so we would
     like to avoid shared memory), but it's not likely to be implemented in the
     initial round.
+
 - Take advantage of multiple cores to parallelize tasks across multiple files
   automatically.
 - Support very low-latency queries for UI-interactive modes: code-completion.
+
   - The crazy stretch goal for this is O(1ms) for code-completion with fully
     warm and primed caches.
+
 - Provide basic command-line tools for interacting with the service layer via
   IPC.
 - Provide a stable C API (much like libclang) for interacting with the service
   layer via IPC.
+
   - Should be a strict subset of the existing libclang API.
   - Clients using only the narrow API should be able to switch trivially
     between the two libraries to get IPC vs. internal process behavior.
+
 - Provide Python bindings around the stable C API for the IPC layer.
+
   - Same constraints as the C API w.r.t. existing Python bindings.
+
 - Share all implementation with libclang. These should be two interfaces to the
   same core functionality.
 - Effective interface strategy for generic open source editors.
+
   - At least VIM and Emacs bust be easily supported as 1st class citizens.
   - I'd really like to have a Mac and Windows editor as well.
 
@@ -77,6 +86,7 @@ mechanism which handles the following tasks:
 - Discovering the existing of a running server for a particular project/user
   combination.
 - Establishing a connection from the client to the server.
+
   - Writing a request message to the server in serialized form.
   - Wait for a response message to arrive from the server.
   - Read the response message in serialized form.
@@ -165,10 +175,12 @@ model:
 - Support arbitrarily complex file remappings, including in the driver and
   header search logic. This is essential to fully support dirty buffers.
 - Thread safety when two threads are concurrently parsing different TUs.
+
   - One potential requirement will be the ability to share the cached open
     files between different file managers with different file remappings. This
     will reduce the memory overhead significantly, but introduces
     synchronization complexity.
+
 - More optional callback instrumentation of the compilation, for example to
   pause and resume parsing or other operations while communicating with the
   client.
@@ -224,11 +236,13 @@ locate or launch a server follows:
 #) Starting from the working directory of the client (or a given directory),
    walk up from that directory through parent directories looking for one of
    three files:
+
    #) A '.clangrc' file[#] which specifies the location of compilation
       database(s) and (optionally) the means of connecting to a running Clang
       server, or
    #) A file[#] which allows connecting to the running Clang server, or
    #) A compilation database.
+
 #) If a means of connecting to a Clang server has been established, the client
    will attempt to connect to the server. If that connection fails for any
    reason, it will remove or relocate the connection file to allow forward
