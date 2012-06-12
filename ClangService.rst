@@ -9,7 +9,7 @@ The overarching goal is to build support for running a persistent, caching
 service layer adjacent to a users' editor(s) of choice. This layer would
 provide much of the functionality that might traditionally be found in an IDE,
 but designed to work with different, very "unintegrated" editors and the widely
-used and popular commandline development tools on unix-ish operating systems.
+used and popular command line development tools on unix-ish operating systems.
 It would be implemented in terms of Clang/LLVM's libraries to support
 C/C++/Obj-C/Obj-C++ development. It should be heavily integrated into existing
 Clang layers such as the Tooling library, libclang, and potentially the plugin
@@ -23,7 +23,7 @@ Goals:
 - Provide a restartable, long-lived background process which manages caching,
   compilation, indexes, and performs the business logic.
 - Define an inter-process communication protocol to allow command line tools
-  and libraries to communicate w/ service layer.
+  and libraries to communicate with the service layer.
 
   - This IPC layer should enable cross-machine usage in theory (so we would
     like to avoid shared memory), but it's not likely to be implemented in the
@@ -148,14 +148,14 @@ allow the clang service to act as-if the currently in-progress edits were saved
 when operating on the file. That said, this explicitly will not preclude future
 work to extend the dirty buffer system to support patch deltas or complete
 files in the IPC protocol as necessary to support systems without
-a sufficiently low-overhead filesystem or to support cross-machine operation.
+a sufficiently low-overhead filei system or to support cross-machine operation.
 
 Each of these nested groups will be implemented with re-usable serialization
 and de-serialization logic built on top of the bitcode reader/writer so that we
 can build up a collection of common message data types that can be quickly
 combined by clients to form particular protocols.
 
-The intent is that the set af protocol interfaces exposed closely resembles the
+The intent is that the set of protocol interfaces exposed closely resembles the
 most high-level of the libclang interfaces. These are necessarily stable,
 long-lived interfaces, and so they share many design constraints with libclang.
 There should be close parity in design, structure, and available functionality
@@ -175,12 +175,12 @@ potentially in parallel.
 Several changes are needed to the core Clang libraries to support the server
 model:
 
-- Support arbitrarily complex file remappings, including in the driver and
+- Support arbitrarily complex file re-mappings, including in the driver and
   header search logic. This is essential to fully support dirty buffers.
 - Thread safety when two threads are concurrently parsing different TUs.
 
   - One potential requirement will be the ability to share the cached open
-    files between different file managers with different file remappings. This
+    files between different file managers with different file re-mappings. This
     will reduce the memory overhead significantly, but introduces
     synchronization complexity.
 
@@ -210,7 +210,7 @@ information is available.
 
 The server will also monitor the compilation database and refresh its view if
 the database file changes underneath it. This will be accomplished through the
-filesystem if supported, or through polling and checksumming if not.
+file system if supported, or through polling and checksumming if not.
 
 The Clang server will when started will expose its connection through a file.
 This will be a platform-specific file allowing a connection to be made. It is
@@ -225,9 +225,9 @@ file, that RC file will specify a location for the connection file.
 If the connection file is relocated or removed at any point, the server is
 required to detect this eventually and shut down. It is expected that in the
 event of failure modes multiple servers will be running concurrently for
-a particular project for a brief period of time. TThe server should be able to
+a particular project for a brief period of time. The server should be able to
 gracefully cope with the this, and thus avoid holding locks on shared files for
-long periods of time, but use filesystem locking whenever updating files.
+long periods of time, but use file system locking whenever updating files.
 
 
 Clang C++ Client Libraries
@@ -314,7 +314,7 @@ Clang Client Commandline Interfaces
 The final client interface layer is the CLI. These will take the form of
 extremely small, focused command line tools that wrap a single tool
 functionality. They have three primary roles: First, these will form a command
-line toolset that is the maximally generic and minimal entry-bar point of
+line tool set that is the maximally generic and minimal entry-bar point of
 integration. Anyone with a command line can use them directly in their
 workflow. Any editor which runs in an environment with a command line can
 integrate with them.
@@ -324,12 +324,12 @@ somewhere will have their personal favorite editor that we don't play nicely
 with, and that hurts adoption.
 
 The second role is to provide a bridge between the classical and well
-understood and used Unix development toolset and C++ tools. The CLIs should
+understood and used Unix development tool set and C++ tools. The CLIs should
 integrate cleanly and powerfully with tools and scripts that have been built up
 around the standard tools of find, grep, awk, sed, perl, etc. By integrating
 cleanly with these other tools, many power use cases which would be hard to
 express in a single high-level tool interface can be accomplished by composing
-tools on the commandline.
+tools on the command line.
 
 The final role for the CLIs is to provide a basis for testing. These will drive
 the regression and feature tests, and allow the complete client/server system
