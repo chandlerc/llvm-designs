@@ -19,6 +19,7 @@ architecture.
 Concrete Goals and Non-Goals
 ============================
 Goals:
+
 - Provide a restartable, long-lived background process which manages caching,
   compilation, indexes, and performs the business logic.
 - Define an inter-process communication protocol to allow command line tools
@@ -47,6 +48,7 @@ Goals:
   - I'd really like to have a Mac and Windows editor as well.
 
 Non-Goals:
+
 - Support languages outside of those supported by Clang already.
 - Support code generation or other uses of Clang. (This might be interesting at
   some point, but it's not something we want to be constrained by in the
