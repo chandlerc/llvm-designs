@@ -284,8 +284,8 @@ interactively started editors and other processes. They should form the
 low-overhead alternative to the heavyweight libclang model.
 
 
-Clang Client Python Bindings
-----------------------------
+Clang Client Bindings
+---------------------
 In the same way that the C API in libclang has Python bindings, we expect to
 provide Python bindings for the C client APIs. These bindings will likely be
 a common means of interfacing with the server due to the ubiquity of Python
@@ -293,3 +293,41 @@ plugin support in editors. The Python API should expose all the same high-level
 functionality as the C API does, and it should be significantly cheaper to load
 and interact with in an editor or plugin context due to the light weight nature
 of the C client APIs.
+
+It is also likely that several other binding languages will be provided. Due to
+the inherently high level nature of the interfaces, and the reliance on IPC for
+all of the implementation details, bindings are expected to be very easy and
+light weight. These will ease the editor integration process. Beyond the Python
+bindings which are seen as absolutely necessary, the following bindings would
+be very useful:
+
+- Elisp, for Emacs integration.
+- Ruby, for RoR and web application integration.
+- Lua, often used as a lighter-weight plugin glue language.
+
+
+Clang Client Commandline Interfaces
+-----------------------------------
+The final client interface layer is the CLI. These will take the form of
+extremely small, focused command line tools that wrap a single tool
+functionality. They have three primary roles: First, these will form a command
+line toolset that is the maximally generic and minimal entry-bar point of
+integration. Anyone with a command line can use them directly in their
+workflow. Any editor which runs in an environment with a command line can
+integrate with them.
+
+Without a CLI, we can't support 'ed'. If we can't support 'ed', then someone
+somewhere will have their personal favorite editor that we don't play nicely
+with, and that hurts adoption.
+
+The second role is to provide a bridge between the classical and well
+understood and used Unix development toolset and C++ tools. The CLIs should
+integrate cleanly and powerfully with tools and scripts that have been built up
+around the standard tools of find, grep, awk, sed, perl, etc. By integrating
+cleanly with these other tools, many power use cases which would be hard to
+express in a single high-level tool interface can be accomplished by composing
+tools on the commandline.
+
+The final role for the CLIs is to provide a basis for testing. These will drive
+the regression and feature tests, and allow the complete client/server system
+to be easily exercised in a repeatable fashion.
