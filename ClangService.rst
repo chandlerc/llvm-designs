@@ -226,6 +226,7 @@ a particular project for a brief period of time. TThe server should be able to
 gracefully cope with the this, and thus avoid holding locks on shared files for
 long periods of time, but use filesystem locking whenever updating files.
 
+
 Clang C++ Client Libraries
 --------------------------
 The client code will have at its core a set of C++ libraries that use the IPC
@@ -240,7 +241,7 @@ locate or launch a server follows:
    #) A '.clangrc' file [#]_ which specifies the location of compilation
       database(s) and (optionally) the means of connecting to a running Clang
       server, or
-   #) A file [#]_ which allows connecting to the running Clang server, or
+   #) A file which allows connecting to the running Clang server, or
    #) A compilation database.
 
 #) If a means of connecting to a Clang server has been established, the client
@@ -251,7 +252,44 @@ locate or launch a server follows:
    the given RC file and/or compilation database.
 
 .. [#] TODO: Link to .clangrc docs as above.
-.. [#] This file is a platform-specific construct. The current plan is to use
-       Unix domain sockts and allow Windows developers to suggest that
-       platform's implementation.
 
+Once the client has connected, it can send and receive messages to complete
+whatever tool requests are necessary. The C++ libraries will include convenient
+wrapper APIs matching the high-level Clang-based tool functionality which
+manage the IPC necessary to implement them in the context of a client program.
+These libraries will be as light weight and minimal as possible.
+
+Note that these will not represent a stable API in any way. They will follow
+the same rapid-update development philosophy of Clang and LLVM in general.
+Stable APIs will always be through an *ABI* safe interface.
+
+
+Clang C Client Libraries
+------------------------
+Wrapping the C++ client libraries will be a API and ABI stable C library. This
+will very closely resemble (and ideally end up largely source-compatible with)
+the highest-level libclang APIs. The goal is to evolve them in parallel, and
+wherever it makes sense, expose similar functionality through both using
+similar interfaces. Ideally clients can choose whether to link in the
+functionality or reach out to an external process, while coding against largely
+similar interfaces.
+
+Note however that not all libclang interfaces are suitable to the client/server
+model. It is not currently expected that the full richness of the cursor
+interface will make sense in a client/server model.
+
+It is an essential property of the C APIs that they are extremely light weight
+both in binary size and runtime. These are expected to loaded and unloaded into
+interactively started editors and other processes. They should form the
+low-overhead alternative to the heavyweight libclang model.
+
+
+Clang Client Python Bindings
+----------------------------
+In the same way that the C API in libclang has Python bindings, we expect to
+provide Python bindings for the C client APIs. These bindings will likely be
+a common means of interfacing with the server due to the ubiquity of Python
+plugin support in editors. The Python API should expose all the same high-level
+functionality as the C API does, and it should be significantly cheaper to load
+and interact with in an editor or plugin context due to the light weight nature
+of the C client APIs.
