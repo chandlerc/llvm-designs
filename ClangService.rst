@@ -53,7 +53,7 @@ Goals:
   same core functionality.
 - Effective interface strategy for generic open source editors.
 
-  - At least VIM and Emacs bust be easily supported as 1st class citizens.
+  - At least VIM and Emacs must be easily supported as 1st class citizens.
   - I'd really like to have a Mac and Windows editor as well.
 
 Non-Goals:
