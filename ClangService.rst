@@ -187,9 +187,9 @@ model:
 - Factoring some of the logic currently in libclang to implement high-level
   operations into C++ APIs that can be shared by libclang and the server.
 
-The Clang server will operate on one or more compilation databases[#]
+The Clang server will operate on one or more compilation databases[#]_
 associated with a project. These will be found either by an explicit database
-file or using a '.clangrc' file[#].  If the RC file specifies multiple
+file or using a '.clangrc' file[#]_.  If the RC file specifies multiple
 compilation databases for a given project, potentially for different build
 configurations, the server will utilize the union of them. These databases will
 provide the basis for running tools over source code. The server will expose an
@@ -214,7 +214,7 @@ This will be a platform-specific file allowing a connection to be made. It is
 expected to Unix Domain Socket on Linux at least, and likely Mac. Windows
 support mechanism here is TBD. If the server is started around a single
 compilation database, the connection file will be placed adjacent to it, and
-called '.clang_server_connection'[#]. If the server is started using an RC
+called '.clang_server_connection'[#]_. If the server is started using an RC
 file, that RC file will specify a location for the connection file.
 
 .. [#] TODO: Is there a better name for this?
@@ -237,10 +237,10 @@ locate or launch a server follows:
    walk up from that directory through parent directories looking for one of
    three files:
 
-   #) A '.clangrc' file[#] which specifies the location of compilation
+   #) A '.clangrc' file[#]_ which specifies the location of compilation
       database(s) and (optionally) the means of connecting to a running Clang
       server, or
-   #) A file[#] which allows connecting to the running Clang server, or
+   #) A file[#]_ which allows connecting to the running Clang server, or
    #) A compilation database.
 
 #) If a means of connecting to a Clang server has been established, the client
