@@ -145,7 +145,10 @@ The idea is that the editor can stash copies of dirty edit buffers into
 temporary storage, potentially in-memory temporary storage, and provide
 a mapping from the source file to the storage location for the dirty buffer to
 allow the clang service to act as-if the currently in-progress edits were saved
-when operating on the file.
+when operating on the file. That said, this explicitly will not preclude future
+work to extend the dirty buffer system to support patch deltas or complete
+files in the IPC protocol as necessary to support systems without
+a sufficiently low-overhead filesystem or to support cross-machine operation.
 
 Each of these nested groups will be implemented with re-usable serialization
 and de-serialization logic built on top of the bitcode reader/writer so that we
