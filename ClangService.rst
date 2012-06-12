@@ -334,3 +334,67 @@ tools on the command line.
 The final role for the CLIs is to provide a basis for testing. These will drive
 the regression and feature tests, and allow the complete client/server system
 to be easily exercised in a repeatable fashion.
+
+
+Implementation Strategy
+=======================
+
+*N.B.*: This section is *extremely* rough, much more-so than the rest of the
+document. Take it with big, big grains of salt.
+
+We're planning on implementing this design with a two-pronged
+meet-in-the-middle approach for the initial functionality. One side will start
+at the bottom of the infrastructure stack with Clang:
+
+#) Fix filesystem layer in LLVM & Clang to support proper cross-platform VFS,
+   dirty buffer interposition even for the Clang driver, the FileManager use
+   cases, etc.
+
+   - A necessary step will be to unify / remove PathV1 and PathV2. This should
+     end the long standing PathV* / FileManager confusion in addition to paving
+     the way for the features needed by a server model.
+   - Will also lay ground work for thread safely sharing some file resources,
+     any local filesystem caches, etc.
+
+#) Prepare Clang for concurrent operation.
+
+   - Fix some lingering global variables in the Clang logic.
+   - Also Ensuring that none of the thread-hostile LLVM commandline flags are
+     used by normal Clang parsing, even in the presence of inline assembly.
+   - Add concurrency primitives in addition to synchronization -- work queue,
+     executors, etc.
+   - Write a concurrent testing tool.
+
+#) Connect Tooling layer to concurrency layer, parallelize tools by default.
+#) Add necessary RC-file wiring.
+#) Connect basic server request system to socket library, demo persistent
+   server running.
+#) Implement server logic (request processing, queuing, etc.)
+
+
+Concurrently, the second path of attack:
+
+#) Build socket-like I/O library, discovery, connection management layer.
+
+   - Will include basic testing utilities, mostly unit tests.
+   - Some performance measurement tools possible, measure latency & throughput.
+   - Likely only to support Linux and local sockets in the initial
+     implementation.
+
+#) Build framework for message serialization & de-serialization w/ bitcode.
+
+   - Request/response boiler plate.
+   - Core message structures (source location, dirty buffers, etc)
+   - Clang-check diagnostic message structures
+   - Test tools to read and write messages so that they can be round-tripped.
+
+#) Build initial C++ client library, basic functionality
+
+   - Start, stop, discover server
+   - Connection opening, request, wait, response reading
+   - Hook clang-check up to client library, demo round-trip of clang-check
+     through server.
+
+
+From this point, we'll start to branch outward feature-wise rather than diving
+toward each other.
