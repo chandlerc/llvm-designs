@@ -148,7 +148,7 @@ allow the clang service to act as-if the currently in-progress edits were saved
 when operating on the file. That said, this explicitly will not preclude future
 work to extend the dirty buffer system to support patch deltas or complete
 files in the IPC protocol as necessary to support systems without
-a sufficiently low-overhead filei system or to support cross-machine operation.
+a sufficiently low-overhead file system or to support cross-machine operation.
 
 Each of these nested groups will be implemented with re-usable serialization
 and de-serialization logic built on top of the bitcode reader/writer so that we
