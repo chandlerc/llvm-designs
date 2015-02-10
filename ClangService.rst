@@ -201,7 +201,7 @@ well in order to match expected libclang functionality. This will also allow
 IDEs to potentially dynamically update the compilation database as new build
 information is available.
 
-.. [#] TODO: Link to compilation database documentation on clang.llvm.org.
+.. [#] [JSON Compilation Database](http://clang.llvm.org/docs/JSONCompilationDatabase.html)
 
 .. [#] TODO: Specify the format of this file, and add support for it to the
        Tooling library as it is generally useful. Current plan is a flat YAML
